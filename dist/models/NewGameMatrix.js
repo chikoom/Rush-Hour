@@ -1,6 +1,6 @@
 import { Matrix } from './Matrix.js'
 import { Player } from './Player.js'
-export class GameMatrix extends Matrix {
+export class NewGameMatrix extends Matrix {
   constructor(rows, cols) {
     super(rows, cols)
     this.width = cols

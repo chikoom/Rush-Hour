@@ -1,3 +1,27 @@
 body {
   background-color: aliceblue;
 }
+#root-container{
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 11fr 1fr;
+}
+#gameArea{
+    width:100%;
+    height: 100%;
+}
+.game-martix{
+    width:100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto;
+}
+.matrix-row{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+.matrix-cell{
+    display: grid;
+    justify-content: center;
+    align-content: center;
+}
