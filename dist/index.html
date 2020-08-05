@@ -7,21 +7,133 @@
     <title>Rush Hour</title>
   </head>
   <body>
-    <div id="root-container">
-      <div id="gameArea"></div>
-    </div>
+    <div id="root-container"></div>
 
-    <script id="gameArea-template" type="text/x-handlebars-template">
-      <div class='game-martix'>
-        {{#each matrix}}
-          <div class='matrix-row'>
-            {{#each this}}
-              <div class='matrix-cell'>
-                {{this}}
-              </div>
-            {{/each}}
+    <!-- **** SCOREBAR TEMPLATE **** -->
+    <script id="scorebar-template" type="text/x-handlebars-template">
+      <div id="scorebar">
+        <div class='scorebar-container'>
+          <div id="scorebar-player-1">
+            <h4 class="scorebar-nickname">NICKNAME</h4>
+            <span class="scorebar-player-type">player 1</span>
+            <span class="scorebar-player-score">0</span>
           </div>
-        {{/each}}
+        </div>
+        <div class='scorebar-container'>
+          <div id="scorebar-time">
+            <h4>COINS LEFT</h4>
+            <span>00</span>
+          </div>
+        </div>
+        <div class='scorebar-container'>
+          <div id="scorebar-player-2">
+            <h4 class="scorebar-nickname">NAMENICK</h4>
+            <span class="scorebar-player-type">player 2</span>
+            <span class="scorebar-player-score">0</span>
+          </div>
+        </div>
+    </script>
+
+    <!-- **** GAME AREA TEMPLATE **** -->
+    <script id="gameArea-template" type="text/x-handlebars-template">
+      <div id="gameArea">
+        <div class='game-martix'>
+          {{#each matrix}}
+            <div class='matrix-row'>
+              {{#each this}}
+                <div class='matrix-cell object-{{#printHelper}}{{this}}{{/printHelper}}'>
+                </div>
+              {{/each}}
+            </div>
+          {{/each}}
+        </div>
+      </div>
+    </script>
+
+    <!-- **** HOMESCREEN TEMPLATE **** -->
+    <script id="homescreen-template" type="text/x-handlebars-template">
+      <div class='homescreen'>
+        <div class='homescreen-selection'>
+          <div class='player-selection'>
+            <h3>
+              NUMBER OF PLAYERS?
+            </h3>
+            <button
+              class='home-button home-button-players active'
+              id='btn-player-1'
+              data-gameMode='1player'
+            >
+              1 PLAYER
+            </button>
+            <button
+              class='home-button home-button-players'
+              id='btn-player-2'
+              data-gameMode='2players'
+            >
+              2 PLAYERS
+            </button>
+          </div>
+          <div class='network-selection'>
+            <h3>
+              OPPONENTS
+            </h3>
+            <button
+              class='home-button home-button-network active'
+              id='btn-network-computer'
+              data-netMode='local'
+            >
+              LOCAL
+            </button>
+            <button
+              class='home-button home-button-network'
+              id='btn-network-remote'
+              data-netMode='remote'
+            >
+              REMOTE
+            </button>
+          </div>
+          <div class='computer-selection'>
+            <h3>
+              COMPUTER LEVEL
+            </h3>
+            <button
+              class='home-button home-button-comp active'
+              id='btn-stupid'
+              data-compMode='min'
+            >
+              STUPID
+            </button>
+            <button
+              class='home-button home-button-comp'
+              id='btn-smart'
+              data-compMode='max'
+            >
+              SMART
+            </button>
+          </div>
+          <div class='grid-selection'>
+            <h3>
+              GRID SIZE?
+            </h3>
+            <input
+              class='home-input home-input-size'
+              type='number'
+              name='xsize'
+              id='xsize'
+              value='8'
+            />
+            <input
+              class='home-input home-input-size'
+              type='number'
+              name='ysize'
+              id='ysize'
+              value='8'
+            />
+          </div>
+          <button class='home-button home-button-start' id='btn-start'>
+            START
+          </button>
+        </div>
       </div>
     </script>
     <script src="./handlebars/dist/handlebars.min.js"></script>

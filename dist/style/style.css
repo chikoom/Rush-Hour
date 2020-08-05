@@ -1,11 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Finger+Paint&display=swap');
+
 body {
   background-color: aliceblue;
+    
 }
 #root-container{
     height: 100vh;
     display: grid;
     grid-template-rows: 11fr 1fr;
 }
+h3{
+    font-weight: 100;
+    font-family: 'Finger Paint', cursive;
+    color: #ffffff;
+    font-size: 25px;
+    letter-spacing: 1px;
+    text-shadow: 3px 1px 3px #000000;
+
+}
+
+/** HOMESCREEN STYLES  **/
+.homescreen{
+    width:100%;
+    height: 100%;
+    display: grid;
+    align-content: center;
+    justify-content: center;
+}
+.homescreen-selection{
+max-width: 300px;
+background-color: rgba(49,49,49,0.91);
+    border: 10px solid #fff;
+    box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.31);
+    text-align: center;
+    padding: 10px;
+}
+
+.home-button, .home-input{
+    width:40%;
+    padding: 20px;
+    cursor: pointer;
+    border:0;
+    outline:0;
+    margin:5px;
+    font-family: 'Finger Paint', cursive;
+    box-shadow: 1px 1px 5px #000000;
+}
+.home-button{
+    background-color: #fff;
+}
+.home-button:hover{
+    background-color: #93d88a;
+}
+.home-button:active{
+    background-color: #82eb72;
+    box-shadow: 0px 0px 1px #000000;
+}
+.home-button.active{
+    background-color: #a2e897;
+}
+.home-input{
+    width:50px;
+    text-align: center;
+    font-size:15px;
+}
+.home-button-start{
+    margin: 20px auto;
+}
+/** GAME AREA STYLES **/
 #gameArea{
     width:100%;
     height: 100%;
@@ -25,3 +87,60 @@ body {
     justify-content: center;
     align-content: center;
 }
+.player{
+    display: block;
+    width: 50%;
+    background-size: cover;
+    transform: rotate(90deg);
+}
+.object-player-1{
+    background-image: url('./assets/player-1.png');
+    background-size: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.object-player-2{
+    background-image: url('./assets/player-2.png');
+    background-size: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.building-1{
+    background-image: url('./assets/build-1.png');
+    background-size: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.coin-1{
+    background-image: url('./assets/coin-1.png');
+    background-size: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.direction-left{
+    transform: rotate(-90deg);
+}
+.direction-right{
+    transform: rotate(90deg);
+}
+.direction-up{
+    transform: rotate(0deg);
+}
+.direction-down{
+    transform: rotate(180deg);
+}
+
+/** PREFERENCES  **/
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+

@@ -2,6 +2,7 @@ import { Matrix } from './Matrix.js'
 import { Player } from './Player.js'
 export class GameMatrix extends Matrix {
   constructor(rows, cols) {
+    this.gameMode = '1'
     super(rows, cols)
     this.width = cols
     this.height = rows

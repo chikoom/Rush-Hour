@@ -7,7 +7,7 @@ export class Matrix {
     for (let r = 0; r < rows; r++) {
       const row = []
       for (let c = 0; c < cols; c++) {
-        row.push('.')
+        row.push('-')
       }
       matrix.push(row)
     }
