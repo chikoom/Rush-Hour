@@ -13,23 +13,23 @@
     <script id="scorebar-template" type="text/x-handlebars-template">
       <div id="scorebar">
         <div class='scorebar-container'>
-          <div id="scorebar-player-1">
+          <div id="scorebar-player-1" class="scorebar-player">
             <h4 class="scorebar-nickname">NICKNAME</h4>
             <span class="scorebar-player-type">player 1</span>
-            <span class="scorebar-player-score">0</span>
+            <span class="scorebar-player-score">{{gameState.players.1.score}}</span>
           </div>
         </div>
         <div class='scorebar-container'>
           <div id="scorebar-time">
-            <h4>COINS LEFT</h4>
-            <span>00</span>
+            <h4 class="scorebar-time-header">COINS LEFT</h4>
+            <div class="scorebar-time-counter">{{gameState.numebrOfCoins}}</div>
           </div>
         </div>
         <div class='scorebar-container'>
-          <div id="scorebar-player-2">
+          <div id="scorebar-player-2" class="scorebar-player">
             <h4 class="scorebar-nickname">NAMENICK</h4>
             <span class="scorebar-player-type">player 2</span>
-            <span class="scorebar-player-score">0</span>
+            <span class="scorebar-player-score">{{gameState.players.2.score}}</span>
           </div>
         </div>
     </script>
@@ -50,48 +50,29 @@
       </div>
     </script>
 
-    <!-- **** HOMESCREEN TEMPLATE **** -->
-    <script id="homescreen-template" type="text/x-handlebars-template">
-      <div class='homescreen'>
-        <div class='homescreen-selection'>
-          <div class='player-selection'>
-            <h3>
-              NUMBER OF PLAYERS?
-            </h3>
-            <button
-              class='home-button home-button-players active'
-              id='btn-player-1'
-              data-gameMode='1player'
-            >
-              1 PLAYER
-            </button>
-            <button
-              class='home-button home-button-players'
-              id='btn-player-2'
-              data-gameMode='2players'
-            >
-              2 PLAYERS
-            </button>
-          </div>
-          <div class='network-selection'>
-            <h3>
-              OPPONENTS
-            </h3>
-            <button
-              class='home-button home-button-network active'
-              id='btn-network-computer'
-              data-netMode='local'
-            >
-              LOCAL
-            </button>
-            <button
-              class='home-button home-button-network'
-              id='btn-network-remote'
-              data-netMode='remote'
-            >
-              REMOTE
-            </button>
-          </div>
+    <!-- **** MENU TEMPLATE **** -->
+    <script id="menu-template" type="text/x-handlebars-template">
+      <div class='homescreen-selection'>
+        <div class='player-selection'>
+          <h3>
+            NUMBER OF PLAYERS?
+          </h3>
+          <button
+            class="home-button home-button-players {{#if_eq gamePrefs.gameMode '1player'}}active{{/if_eq}}"
+            id='btn-player-1'
+            data-gameMode='1player'
+          >
+            1 PLAYER
+          </button>
+          <button
+            class="home-button home-button-players {{#if_eq gamePrefs.gameMode '2players'}}active{{/if_eq}}"
+            id='btn-player-2'
+            data-gameMode='2players'
+          >
+            2 PLAYERS
+          </button>
+        </div>
+        {{#if_eq gamePrefs.gameMode '1player'}}
           <div class='computer-selection'>
             <h3>
               COMPUTER LEVEL
@@ -111,31 +92,67 @@
               SMART
             </button>
           </div>
-          <div class='grid-selection'>
+        {{else}}
+          <div class='network-selection'>
             <h3>
-              GRID SIZE?
+              OPPONENTS
             </h3>
-            <input
-              class='home-input home-input-size'
-              type='number'
-              name='xsize'
-              id='xsize'
-              value='8'
-            />
-            <input
-              class='home-input home-input-size'
-              type='number'
-              name='ysize'
-              id='ysize'
-              value='8'
-            />
+            <button
+              class="home-button home-button-network {{#if_eq gamePrefs.netMode 'local'}}active{{/if_eq}}"
+              id='btn-network-computer'
+              data-netMode='local'
+            >
+              LOCAL
+            </button>
+            <button
+              class="home-button home-button-network {{#if_eq gamePrefs.netMode 'remote'}}active{{/if_eq}}"
+              id='btn-network-remote'
+              data-netMode='remote'
+            >
+              REMOTE
+            </button>
           </div>
-          <button class='home-button home-button-start' id='btn-start'>
+        {{/if_eq}}
+
+        <div class='grid-selection'>
+          <h3>
+            GRID SIZE?
+          </h3>
+          <input
+            class='home-input home-input-size'
+            type='number'
+            name='xsize'
+            id='xsize'
+            value='8'
+          />
+          <input
+            class='home-input home-input-size'
+            type='number'
+            name='ysize'
+            id='ysize'
+            value='8'
+          />
+        </div>
+        <button class='home-button home-button-start' id='btn-start'>
+          DRIVE!
+        </button>
+      </div>
+    </script>
+
+    <!-- **** HOMESCREEN TEMPLATE **** -->
+    <script id="homescreen-template" type="text/x-handlebars-template">
+      <div class='homescreen'>
+        <div class='homescreen-splash'>
+          <h1 id='homescreen-title'>
+            RUSH
+          </h1>
+          <button id='click-to-start'>
             START
           </button>
         </div>
       </div>
     </script>
+    <script src="./socket.io-client/dist/socket.io.js"></script>
     <script src="./handlebars/dist/handlebars.min.js"></script>
     <script src="./jquery/dist/jquery.min.js"></script>
     <script src="./controller/main.js" type="module"></script>

@@ -1,5 +1,8 @@
 import { Matrix } from './Matrix.js'
 import { Player } from './Player.js'
+import { Graph } from './Graph.js'
+import { Socket } from './Socket.js'
+
 export class GameMatrix extends Matrix {
   constructor(rows, cols) {
     this.gameMode = '1'
@@ -12,6 +15,13 @@ export class GameMatrix extends Matrix {
       { x: 0, y: 0 },
       { x: rows - 1, y: cols - 1 },
     ]
+    this.socket = {}
+  }
+  async conenctToServer() {
+    this.socket = await new Socket()
+    socket.on('welcome', msg => {
+      console.log(msg)
+    })
   }
   createPlayers(playersInfo) {
     playersInfo.forEach((player, index) => {

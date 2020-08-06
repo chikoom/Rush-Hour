@@ -1,28 +1,37 @@
 import { Matrix } from './Matrix.js'
 import { Player } from './Player.js'
 import { ComputerPlayer } from './ComputerPlayer.js'
+import { AudioManager } from '../models/AudioManager.js'
 
 export class NewGameMatrix extends Matrix {
   constructor(rows, cols) {
     super(rows, cols)
-    this.gameMode = '1player'
-    this.compMode = 'min'
-    this.netMode = 'local'
+
     this.width = cols
     this.height = rows
     this.playerIds = 1
-    this.players = {}
-    this.numberOfCoins = 0
     this.startingPositions = [
       { x: 0, y: 0 },
       { x: rows - 1, y: cols - 1 },
     ]
+    this.audio = new AudioManager()
+    this.gameState = {
+      screen: '',
+      players: {},
+      numberOfCoins: 0,
+      matrix: this.matrix,
+    }
+    this.gamePrefs = {
+      gameMode: '1player',
+      compMode: 'min',
+      netMode: 'local',
+    }
+  }
+  getGamePrefs() {
+    return this.gamePrefs
   }
   getGameState() {
-    return {
-      players: this.players,
-      numebrOfCoins: this.numberOfCoins,
-    }
+    return this.gameState
   }
   generateMatrix(rows, cols) {
     const matrix = []
@@ -36,8 +45,15 @@ export class NewGameMatrix extends Matrix {
     return matrix
   }
   newGame() {
+    if (
+      this.gamePrefs.gameMode === '2players' &&
+      this.gamePrefs.netMode === 'remote'
+    ) {
+      return
+    }
+
     this.matrix = this.generateMatrix(this.width, this.height)
-    if (this.gameMode === '1player') {
+    if (this.gamePrefs.gameMode === '1player') {
       this.createPlayers([
         {
           id: this.playerIds++,
@@ -50,7 +66,7 @@ export class NewGameMatrix extends Matrix {
           type: 'comp',
         },
       ])
-    } else if (this.gameMode === '2players') {
+    } else if (this.gamePrefs.gameMode === '2players') {
       this.createPlayers([
         {
           id: this.playerIds++,
@@ -97,7 +113,7 @@ export class NewGameMatrix extends Matrix {
       } else if (player.type === 'net') {
       }
 
-      this.players[newPlayer.id] = newPlayer
+      this.gameState.players[newPlayer.id] = newPlayer
       this.alter(newPlayer.position.x, newPlayer.position.y, newPlayer)
     })
   }
@@ -116,12 +132,12 @@ export class NewGameMatrix extends Matrix {
     }
   }
   createCoins() {
-    this.numberOfCoins = 0
+    this.gameState.numberOfCoins = 0
     for (let rowI in this.matrix) {
       for (let colI in this.matrix[rowI]) {
         if (this.get(colI, rowI) === '.') {
           this.alter(colI, rowI, 'c')
-          this.numberOfCoins++
+          this.gameState.numberOfCoins++
         }
       }
     }
@@ -133,8 +149,8 @@ export class NewGameMatrix extends Matrix {
     let offsetY = direction === 'down' ? 1 : 0
     offsetY = direction === 'up' ? -1 : offsetY
 
-    let newPositionX = this.players[playerId].position.x + offsetX
-    let newPositionY = this.players[playerId].position.y + offsetY
+    let newPositionX = this.gameState.players[playerId].position.x + offsetX
+    let newPositionY = this.gameState.players[playerId].position.y + offsetY
 
     if (
       !this.checkOutbounds(newPositionX, newPositionY) &&
@@ -142,37 +158,39 @@ export class NewGameMatrix extends Matrix {
       !this.checkWallColusion(newPositionX, newPositionY)
     ) {
       this.alter(
-        this.players[playerId].position.x,
-        this.players[playerId].position.y,
+        this.gameState.players[playerId].position.x,
+        this.gameState.players[playerId].position.y,
         '.'
       )
       if (this.checkCoinTake(newPositionX, newPositionY)) {
-        this.players[playerId].score++
+        this.gameState.players[playerId].score++
         console.log(
-          `Player ${playerId} took a coin! - Score: ${this.players[playerId].score}`
+          `Player ${playerId} took a coin! - Score: ${this.gameState.players[playerId].score}`
         )
-        this.numberOfCoins--
+        this.gameState.numberOfCoins--
       }
 
       if (!this.coinsLeft()) {
         console.log('GameOver')
       }
-      this.alter(newPositionX, newPositionY, this.players[playerId])
-      this.players[playerId].position.x = newPositionX
-      this.players[playerId].position.y = newPositionY
-      this.players[playerId].moveDirection = direction
+      this.alter(newPositionX, newPositionY, this.gameState.players[playerId])
+      this.gameState.players[playerId].position.x = newPositionX
+      this.gameState.players[playerId].position.y = newPositionY
+      this.gameState.players[playerId].moveDirection = direction
     } else {
       console.log(`Can't move`)
     }
   }
   checkCoinTake(posX, posY) {
     if (this.get(posX, posY) === 'c') {
+      let randomSound = Math.floor(Math.random() * 18) + 1
+      this.audio.peopleSounds.men[randomSound].play()
       return true
     }
     return false
   }
   coinsLeft() {
-    return this.numberOfCoins > 0 ? true : false
+    return this.gameState.numberOfCoins > 0 ? true : false
   }
   checkWallColusion(posX, posY) {
     if (this.get(posX, posY) === 'x') {
@@ -182,7 +200,7 @@ export class NewGameMatrix extends Matrix {
     return false
   }
   checkPlayerColusion(playerId, posX, posY) {
-    for (const [pID, player] of Object.entries(this.players)) {
+    for (const [pID, player] of Object.entries(this.gameState.players)) {
       if (
         playerId !== pID &&
         player.position.x === posX &&
@@ -208,5 +226,11 @@ export class NewGameMatrix extends Matrix {
   }
   getMatrix() {
     return this.matrix
+  }
+  playMusic() {
+    if (!this.audio.musicStarted) {
+      this.audio.musicStarted = true
+      this.audio.playMusic()
+    }
   }
 }

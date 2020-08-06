@@ -1,9 +1,11 @@
 import { GameMatrix } from '../models/GameMatrix.js'
 import { NewGameMatrix } from '../models/NewGameMatrix.js'
 import { Renderer } from '../views/Renderer.js'
+import { AudioManager } from '../models/AudioManager.js'
 
-const gameMatrix = new NewGameMatrix(8, 8)
+const gameMatrix = new NewGameMatrix(10, 10)
 const renderer = new Renderer()
+const audio = new AudioManager()
 
 const controlMapping = {
   119: { p: 1, d: 'up' },
@@ -22,23 +24,21 @@ const handleStart = () => {
 }
 
 const handlePlayerSelect = function () {
-  $('.home-button-players.active').removeClass('active')
-  $(this).addClass('active')
-  gameMatrix.gameMode = $(this).attr('data-gameMode')
+  gameMatrix.gamePrefs.gameMode = $(this).attr('data-gameMode')
+  renderer.renderMenu(gameMatrix.getGamePrefs())
 }
 
 const handleCompSelect = function () {
   $('.home-button-comp.active').removeClass('active')
   $(this).addClass('active')
 
-  gameMatrix.compMode = $(this).attr('data-gameMode')
+  gameMatrix.gamePrefs.compMode = $(this).attr('data-compMode')
+  renderer.renderMenu(gameMatrix.getGamePrefs())
 }
 
 const handleNetworkSelect = function () {
-  $('.home-button-network.active').removeClass('active')
-  $(this).addClass('active')
-
-  gameMatrix.netMode = $(this).attr('data-gameMode')
+  gameMatrix.gamePrefs.netMode = $(this).attr('data-netMode')
+  renderer.renderMenu(gameMatrix.getGamePrefs())
 }
 
 const init = () => {
@@ -53,6 +53,16 @@ const handleKeyPress = event => {
   renderer.renderScore(gameMatrix.getGameState())
 }
 
+const handleBodyClick = () => {
+  gameMatrix.playMusic()
+}
+
+const handleStartClick = () => {
+  renderer.renderMenu(gameMatrix.getGamePrefs())
+}
+
+$('body').on('click', '#click-to-start', handleStartClick)
+$('body').on('click', handleBodyClick)
 $('body').on('click', '.home-button-network', handleNetworkSelect)
 $('body').on('click', '.home-button-comp', handleCompSelect)
 $('body').on('click', '.home-button-players', handlePlayerSelect)
