@@ -7,6 +7,7 @@
     <title>Rush Hour</title>
   </head>
   <body>
+    <button id="mute-sound"></button>
     <div id="root-container"></div>
 
     <!-- **** SCOREBAR TEMPLATE **** -->
@@ -16,7 +17,7 @@
           <div id="scorebar-player-1" class="scorebar-player">
             <h4 class="scorebar-nickname">NICKNAME</h4>
             <span class="scorebar-player-type">player 1</span>
-            <span class="scorebar-player-score">{{gameState.players.1.score}}</span>
+            <span class="scorebar-player-score">{{#PlayerScore 1}}{{gameState.players}}{{/PlayerScore}}</span>
           </div>
         </div>
         <div class='scorebar-container'>
@@ -29,7 +30,7 @@
           <div id="scorebar-player-2" class="scorebar-player">
             <h4 class="scorebar-nickname">NAMENICK</h4>
             <span class="scorebar-player-type">player 2</span>
-            <span class="scorebar-player-score">{{gameState.players.2.score}}</span>
+            <span class="scorebar-player-score">{{#PlayerScore 2}}{{gameState.players}}{{/PlayerScore}}</span>
           </div>
         </div>
     </script>
@@ -58,36 +59,44 @@
             NUMBER OF PLAYERS?
           </h3>
           <button
-            class="home-button home-button-players {{#if_eq gamePrefs.gameMode '1player'}}active{{/if_eq}}"
+            class="menu-selection home-button home-button-players {{#if_eq gamePrefs.numberOfPlayers '1'}}active{{/if_eq}}"
             id='btn-player-1'
-            data-gameMode='1player'
+            data-numberOfPlayers='1'
+            data-pref='1'
+            data-name='numberOfPlayers'
           >
             1 PLAYER
           </button>
           <button
-            class="home-button home-button-players {{#if_eq gamePrefs.gameMode '2players'}}active{{/if_eq}}"
+            class="menu-selection home-button home-button-players {{#if_eq gamePrefs.numberOfPlayers '2'}}active{{/if_eq}}"
             id='btn-player-2'
-            data-gameMode='2players'
+            data-numberOfPlayers='2'
+            data-pref='2'
+            data-name='numberOfPlayers'
           >
             2 PLAYERS
           </button>
         </div>
-        {{#if_eq gamePrefs.gameMode '1player'}}
+        {{#if_eq gamePrefs.numberOfPlayers '1'}}
           <div class='computer-selection'>
             <h3>
               COMPUTER LEVEL
             </h3>
             <button
-              class='home-button home-button-comp active'
+              class="menu-selection home-button home-button-comp {{#if_eq gamePrefs.compMode 'min'}}active{{/if_eq}}"
               id='btn-stupid'
               data-compMode='min'
+              data-pref='min'
+              data-name='compMode'
             >
               STUPID
             </button>
             <button
-              class='home-button home-button-comp'
+              class="menu-selection home-button home-button-comp {{#if_eq gamePrefs.compMode 'max'}}active{{/if_eq}}"
               id='btn-smart'
               data-compMode='max'
+              data-pref='max'
+              data-name='compMode'
             >
               SMART
             </button>
@@ -98,16 +107,20 @@
               OPPONENTS
             </h3>
             <button
-              class="home-button home-button-network {{#if_eq gamePrefs.netMode 'local'}}active{{/if_eq}}"
+              class="menu-selection home-button home-button-network {{#if_eq gamePrefs.netMode 'local'}}active{{/if_eq}}"
               id='btn-network-computer'
               data-netMode='local'
+              data-pref='local'
+              data-name='netMode'
             >
               LOCAL
             </button>
             <button
-              class="home-button home-button-network {{#if_eq gamePrefs.netMode 'remote'}}active{{/if_eq}}"
+              class="menu-selection home-button home-button-network {{#if_eq gamePrefs.netMode 'remote'}}active{{/if_eq}}"
               id='btn-network-remote'
               data-netMode='remote'
+              data-pref='remote'
+              data-name='netMode'
             >
               REMOTE
             </button>
@@ -123,17 +136,17 @@
             type='number'
             name='xsize'
             id='xsize'
-            value='8'
+            value='{{gamePrefs.numberOfRows}}'
           />
           <input
             class='home-input home-input-size'
             type='number'
             name='ysize'
             id='ysize'
-            value='8'
+            value='{{gamePrefs.numberOfCols}}'
           />
         </div>
-        <button class='home-button home-button-start' id='btn-start'>
+        <button class='home-button home-button-drive' id='btn-drive'>
           DRIVE!
         </button>
       </div>
@@ -152,6 +165,56 @@
         </div>
       </div>
     </script>
+
+    <!-- **** PRE SCREEN TEMPLATE **** -->
+    <script id="preScreen-template" type="text/x-handlebars-template">
+      <div id='pre-screen'>
+        <p>
+          created by Chikoom
+        </p>
+        <p>
+          click anywhere to begin
+        </p>
+      </div>
+    </script>
+
+    <!-- **** GAMEOVER TEMPLATE **** -->
+    <script id="gameover-template" type="text/x-handlebars-template">
+      <div class='gameover-container'>
+        <div class='gameover-inner'>
+          <div id='winner-title'>
+            Winner!
+          </div>
+          <h2 id='winner-nickname'>
+            {{winnerPlayer.nickname}}
+          </h2>
+          <h3 id='winner-player'>
+            Player {{winnerPlayer.number}}
+          </h3>
+          <div id='winner-score'>
+            Score: {{winnerPlayer.score}}
+          </div>
+          <button class='home-button' id='play-again'>
+            AGAIN!
+          </button>
+          <button class='home-button' id='main-menu'>
+            MENU
+          </button>
+        </div>
+      </div>
+    </script>
+
+    <!-- **** SERVER MESSAGE TEMPLATE **** -->
+    <script id="serverMsg-template" type="text/x-handlebars-template">
+      <div class='server-msg-container'>
+        <div class='server-msg-inner'>
+          <p class='server-msg'>
+            {{this.msg}}
+          </p>
+        </div>
+      </div>
+    </script>
+
     <script src="./socket.io-client/dist/socket.io.js"></script>
     <script src="./handlebars/dist/handlebars.min.js"></script>
     <script src="./jquery/dist/jquery.min.js"></script>
