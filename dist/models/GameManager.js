@@ -51,7 +51,7 @@ export class GameManager {
       this._gamePrefs.numberOfPlayers === '2' &&
       this._gamePrefs.netMode === 'remote'
     ) {
-      this.socket = io('http://localhost:3031/rushGame')
+      this.socket = io('https://rush-driver.herokuapp.com:3031/rushGame')
       return this.socket
     }
   }
