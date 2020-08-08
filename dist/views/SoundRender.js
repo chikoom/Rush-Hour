@@ -45,23 +45,16 @@ export class SoundRender {
 
     for (let i = 1; i < 18; i++) {
       this.peopleSounds.men[i] = new Audio()
-      this.peopleSounds.men[
-        i
-      ].src = `../style/assets/sounds/m${i}.mp3`
+      this.peopleSounds.men[i].src = `../style/assets/sounds/m${i}.mp3`
     }
     for (let i = 1; i < 10; i++) {
       this.peopleSounds.women[i] = new Audio()
-      this.peopleSounds.women[
-        i
-      ].src = `../style/assets/sounds/f${i}.mp3`
+      this.peopleSounds.women[i].src = `../style/assets/sounds/f${i}.mp3`
     }
   }
   loadSounds(sounds) {
     sounds.forEach(sound =>
-      this.soundPlayers.set(
-        sound.name,
-        new Audio(sound.path)
-      )
+      this.soundPlayers.set(sound.name, new Audio(sound.path))
     )
   }
   playSound(soundName) {
@@ -71,23 +64,11 @@ export class SoundRender {
   playPause() {
     if (audio.paused) {
       audio.play()
-      playbtn.style.background =
-        'url(images/pause.png) no-repeat'
     } else {
       audio.pause()
-      playbtn.style.background =
-        'url(images/play.png) no-repeat'
     }
   }
   mute() {
-    if (audio.muted) {
-      audio.muted = false
-      mutebtn.style.background =
-        'url(images/speaker.png) no-repeat'
-    } else {
-      audio.muted = true
-      mutebtn.style.background =
-        'url(images/speaker_muted.png) no-repeat'
-    }
+    this.soundPlayers.forEach(sound => (sound.muted = !sound.muted))
   }
 }

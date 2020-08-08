@@ -50,7 +50,10 @@ const handleStart = async () => {
   renderer.render(gameManager.gameMatrix.gameState)
 }
 
-init()
+const toggleSound = () => {
+  $('#mute-sound>i').toggleClass('fa-volume-mute fa-volume-up')
+  gameSound.mute()
+}
 
 const handleKeyPress = event => {
   let keycode = event.keyCode ? event.keyCode : event.which
@@ -81,6 +84,7 @@ $('body').on('change', '.home-input-size', handleGridInputSize)
 $('body').on('click', '#btn-drive', handleStart)
 $('body').on('click', '#play-again', handleStartClick)
 $('body').on('click', '#main-menu', handlePreScreenClick)
+$('#mute-sound').on('click', toggleSound)
 
 const handleSocketListners = socket => {
   socket.on('welcome', msg => {
@@ -112,3 +116,5 @@ const handleSocketListners = socket => {
     renderer.render(data.gameState)
   })
 }
+
+init()
