@@ -1,6 +1,5 @@
 const express = require('express')
 const path = require('path')
-const io = require('socket.io')()
 const Queue = require('./game/classes/Queue')
 const NewGameMatrix = require('./game/classes/ServerGameMatrix')
 const util = require('util')
@@ -15,6 +14,13 @@ const gameRooms = {
   waitingRoom: new Queue(),
   currentRoomID: 1,
 }
+
+const PORT = process.env.PORT || 3000
+const server = app.listen(PORT, () => {
+  console.log(`SERVER UP AND AWAY : ${PORT}`)
+})
+
+const io = require('socket.io')(server)
 
 io.of('/rushGame').on('connection', socket => {
   socket.emit('welcome', 'Connected to server! Waiting for opponent')
@@ -107,11 +113,6 @@ io.of('/rushGame').on('connection', socket => {
   // })
 })
 
-io.listen(3031, () => {
-  console.log(`SERVER UP AND AWAY : ${PORT}`)
-})
-
-const PORT = process.env.PORT
-app.listen(PORT, () => {
-  console.log(`SERVER UP AND AWAY : ${PORT}`)
-})
+// io.listen(3031, () => {
+//   console.log(`SERVER UP AND AWAY : ${PORT}`)
+// })
