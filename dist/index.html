@@ -17,20 +17,19 @@
       <div id="scorebar">
         <div class='scorebar-container'>
           <div id="scorebar-player-1" class="scorebar-player">
-            <h4 class="scorebar-nickname">NICKNAME</h4>
+            <h4 class="scorebar-nickname">{{#PlayerName 1}}{{gameState.players}}{{/PlayerName}}</h4>
             <span class="scorebar-player-type">player 1</span>
             <span class="scorebar-player-score">{{#PlayerScore 1}}{{gameState.players}}{{/PlayerScore}}</span>
           </div>
         </div>
         <div class='scorebar-container'>
           <div id="scorebar-time">
-            <h4 class="scorebar-time-header">COINS LEFT</h4>
-            <div class="scorebar-time-counter">{{gameState.numebrOfCoins}}</div>
+            <h1>RUSH!</h1>
           </div>
         </div>
         <div class='scorebar-container'>
           <div id="scorebar-player-2" class="scorebar-player">
-            <h4 class="scorebar-nickname">NAMENICK</h4>
+            <h4 class="scorebar-nickname">{{#PlayerName 2}}{{gameState.players}}{{/PlayerName}}</h4></h4>
             <span class="scorebar-player-type">player 2</span>
             <span class="scorebar-player-score">{{#PlayerScore 2}}{{gameState.players}}{{/PlayerScore}}</span>
           </div>

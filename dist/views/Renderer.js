@@ -85,3 +85,9 @@ Handlebars.registerHelper('PlayerScore', function (a, opts) {
     player => player.number === a
   )[0].score
 })
+
+Handlebars.registerHelper('PlayerName', function (a, opts) {
+  return Object.values(this.gameState.players).filter(
+    player => player.number === a
+  )[0].nickname
+})

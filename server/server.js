@@ -31,7 +31,7 @@ io.of('/rushGame').on('connection', socket => {
   console.log('Searching Game Room')
 
   if (!gameRooms.waitingRoom.peek()) {
-    const gameMatrix = new NewGameMatrix(8, 8)
+    const gameMatrix = new NewGameMatrix(10, 10)
     gameMatrix.newGame(playerID)
 
     gameRooms.waitingRoom.enqueue({
@@ -69,13 +69,13 @@ io.of('/rushGame').on('connection', socket => {
   }
 
   socket.on('move', data => {
-    console.log('Move Player', socket.id)
-    console.log('to', data.move)
-    console.log('In room', data.roomID)
+    //console.log('Move Player', socket.id)
+    //console.log('to', data.move)
+    //console.log('In room', data.roomID)
 
-    console.log(
-      util.inspect(gameRooms.fullRooms, { showHidden: true, depth: 99 })
-    )
+    // console.log(
+    //   util.inspect(gameRooms.fullRooms, { showHidden: true, depth: 99 })
+    // )
 
     gameRooms.fullRooms
       .get(data.roomID)
@@ -89,30 +89,4 @@ io.of('/rushGame').on('connection', socket => {
         gameState: gameRooms.fullRooms.get(data.roomID).gameMatrix.gameState,
       })
   })
-
-  //console.log('Full Rooms', gameRooms.fullRooms)
-
-  // if (gameRooms.includes(room)) {
-  //   socket.join(room)
-  //   io.of('/rushGame').emit('newUser', 'new user has joined')
-  //   return socket.emit('joinSuccess', 'You joined the room')
-  // } else {
-  //   return socket.emit('err', 'No room')
-  // }
-
-  // socket.emit('id', UserId++)
-
-  // socket.on('joinRoom', room => {
-  //   if (gameRooms.includes(room)) {
-  //     socket.join(room)
-  //     io.of('/rushGame').emit('newUser', 'new user has joined')
-  //     return socket.emit('joinSuccess', 'You joined the room')
-  //   } else {
-  //     return socket.emit('err', 'No room')
-  //   }
-  // })
 })
-
-// io.listen(3031, () => {
-//   console.log(`SERVER UP AND AWAY : ${PORT}`)
-// })
