@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="./@fortawesome/fontawesome-free/css/all.css" />
+    <link rel="stylesheet" href="./style/style.css" />
+    <title>Rush!</title>
+  </head>
+  <body>
+    <button id="mute-sound"><i class="fas fa-volume-mute"></i></button>
+    <div id="root-container"></div>
+
+    <!-- **** SCOREBAR TEMPLATE **** -->
+    <script id="scorebar-template" type="text/x-handlebars-template">
+      <div id="scorebar">
+        <div class='scorebar-container'>
+          <div id="scorebar-player-1" class="scorebar-player">
+            <h4 class="scorebar-nickname">{{#PlayerName 1}}{{gameState.players}}{{/PlayerName}}</h4>
+            <span class="scorebar-player-type">player 1</span>
+            <span class="scorebar-player-score">{{#PlayerScore 1}}{{gameState.players}}{{/PlayerScore}}</span>
+          </div>
+        </div>
+        <div class='scorebar-container'>
+          <div id="scorebar-time">
+            <h1>RUSH!</h1>
+          </div>
+        </div>
+        <div class='scorebar-container'>
+          <div id="scorebar-player-2" class="scorebar-player">
+            <h4 class="scorebar-nickname">{{#PlayerName 2}}{{gameState.players}}{{/PlayerName}}</h4></h4>
+            <span class="scorebar-player-type">player 2</span>
+            <span class="scorebar-player-score">{{#PlayerScore 2}}{{gameState.players}}{{/PlayerScore}}</span>
+          </div>
+        </div>
+    </script>
+
+    <!-- **** GAME AREA TEMPLATE **** -->
+    <script id="gameArea-template" type="text/x-handlebars-template">
+      <div id="gameArea">
+        <div class='game-martix'>
+          {{#each matrix}}
+            <div class='matrix-row'>
+              {{#each this}}
+                <div class='matrix-cell object-{{#printHelper}}{{this}}{{/printHelper}}'>
+                </div>
+              {{/each}}
+            </div>
+          {{/each}}
+        </div>
+      </div>
+    </script>
+
+    <!-- **** MENU TEMPLATE **** -->
+    <script id="menu-template" type="text/x-handlebars-template">
+      <div class='homescreen-selection'>
+        <div class='player-selection'>
+          <h3>
+            NUMBER OF PLAYERS?
+          </h3>
+          <button
+            class="menu-selection home-button home-button-players {{#if_eq gamePrefs.numberOfPlayers '1'}}active{{/if_eq}}"
+            id='btn-player-1'
+            data-numberOfPlayers='1'
+            data-pref='1'
+            data-name='numberOfPlayers'
+          >
+            1 PLAYER
+          </button>
+          <button
+            class="menu-selection home-button home-button-players {{#if_eq gamePrefs.numberOfPlayers '2'}}active{{/if_eq}}"
+            id='btn-player-2'
+            data-numberOfPlayers='2'
+            data-pref='2'
+            data-name='numberOfPlayers'
+          >
+            2 PLAYERS
+          </button>
+        </div>
+        {{#if_eq gamePrefs.numberOfPlayers '1'}}
+          <div class='computer-selection'>
+            <h3>
+              COMPUTER LEVEL
+            </h3>
+            <button
+              class="menu-selection home-button home-button-comp {{#if_eq gamePrefs.compMode 'min'}}active{{/if_eq}}"
+              id='btn-stupid'
+              data-compMode='min'
+              data-pref='min'
+              data-name='compMode'
+            >
+              STUPID
+            </button>
+            <button
+              class="menu-selection home-button home-button-comp {{#if_eq gamePrefs.compMode 'max'}}active{{/if_eq}}"
+              id='btn-smart'
+              data-compMode='max'
+              data-pref='max'
+              data-name='compMode'
+            >
+              SMART
+            </button>
+          </div>
+        {{else}}
+          <div class='network-selection'>
+            <h3>
+              OPPONENTS
+            </h3>
+            <button
+              class="menu-selection home-button home-button-network {{#if_eq gamePrefs.netMode 'local'}}active{{/if_eq}}"
+              id='btn-network-computer'
+              data-netMode='local'
+              data-pref='local'
+              data-name='netMode'
+            >
+              LOCAL
+            </button>
+            <button
+              class="menu-selection home-button home-button-network {{#if_eq gamePrefs.netMode 'remote'}}active{{/if_eq}}"
+              id='btn-network-remote'
+              data-netMode='remote'
+              data-pref='remote'
+              data-name='netMode'
+            >
+              REMOTE
+            </button>
+          </div>
+        {{/if_eq}}
+
+        <div class='grid-selection'>
+          <h3>
+            GRID SIZE?
+          </h3>
+          <input
+            class='home-input home-input-size'
+            type='number'
+            name='xsize'
+            id='xsize'
+            value='{{gamePrefs.numberOfRows}}'
+          />
+          <input
+            class='home-input home-input-size'
+            type='number'
+            name='ysize'
+            id='ysize'
+            value='{{gamePrefs.numberOfCols}}'
+          />
+        </div>
+        <button class='home-button home-button-drive' id='btn-drive'>
+          DRIVE!
+        </button>
+      </div>
+    </script>
+
+    <!-- **** HOMESCREEN TEMPLATE **** -->
+    <script id="homescreen-template" type="text/x-handlebars-template">
+      <div class='homescreen'>
+        <div class='homescreen-splash'>
+          <h1 id='homescreen-title'>
+            RUSH!
+          </h1>
+          <button id='click-to-start'>
+            START
+          </button>
+        </div>
+      </div>
+    </script>
+
+    <!-- **** PRE SCREEN TEMPLATE **** -->
+    <script id="preScreen-template" type="text/x-handlebars-template">
+      <div id='pre-screen'>
+        <p>
+          created by Chikoom
+        </p>
+        <p>
+          click anywhere to begin
+        </p>
+      </div>
+    </script>
+
+    <!-- **** GAMEOVER TEMPLATE **** -->
+    <script id="gameover-template" type="text/x-handlebars-template">
+      <div class='gameover-container'>
+        <div class='gameover-inner'>
+          <div id='winner-title'>
+            Winner!
+          </div>
+          <h2 id='winner-nickname'>
+            {{winnerPlayer.nickname}}
+          </h2>
+          <h3 id='winner-player'>
+            Player {{winnerPlayer.number}}
+          </h3>
+          <div id='winner-score'>
+            Score: {{winnerPlayer.score}}
+          </div>
+          <button class='home-button' id='play-again'>
+            AGAIN!
+          </button>
+          <button class='home-button' id='main-menu'>
+            MENU
+          </button>
+        </div>
+      </div>
+    </script>
+
+    <!-- **** SERVER MESSAGE TEMPLATE **** -->
+    <script id="serverMsg-template" type="text/x-handlebars-template">
+      <div class='server-msg-container'>
+        <div class='server-msg-inner'>
+          <p class='server-msg'>
+            {{this.msg}}
+          </p>
+        </div>
+      </div>
+    </script>
+
+    <script src="./socket.io-client/dist/socket.io.js"></script>
+    <script src="./handlebars/dist/handlebars.min.js"></script>
+    <script src="./jquery/dist/jquery.min.js"></script>
+    <script src="./controller/main.js" type="module"></script>
+  </body>
+</html>

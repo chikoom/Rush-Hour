@@ -1,0 +1,346 @@
+@import url('https://fonts.googleapis.com/css2?family=Finger+Paint&display=swap');
+
+body {
+  background-color: aliceblue;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+#root-container {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 10fr 2fr;
+}
+h3 {
+  font-weight: 100;
+  font-family: 'Finger Paint', cursive;
+  color: #ffffff;
+  font-size: 25px;
+  letter-spacing: 1px;
+  text-shadow: 3px 1px 3px #000000;
+}
+
+/** HOMESCREEN STYLES  **/
+#pre-screen {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #222;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  color: #eee;
+  text-align: center;
+}
+.homescreen {
+  min-width: 100vw;
+  min-height: 100vh;
+  display: grid;
+  align-content: center;
+  justify-content: center;
+  background-image: url('./assets/home-bg.png');
+  background-size: cover;
+  background-position: 100%;
+}
+.homescreen-splash {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+}
+#homescreen-title {
+  font-family: 'Finger Paint', cursive;
+  color: #fff;
+  font-size: 180px;
+  margin: 0;
+  text-shadow: -7px -3px 5px #ff0000, 7px 3px 5px #ff0000;
+  line-height: 200px;
+}
+#click-to-start {
+  display: block;
+  color: #ff0000;
+  padding: 10px 20px;
+  margin: 15px auto;
+  text-align: center;
+  font-family: 'Finger Paint', cursive;
+  font-size: 25px;
+  background-color: #000000;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  box-shadow: 0px 0px 5px rgba(206, 9, 9, 0.6);
+}
+#click-to-start:hover {
+  color: #000000;
+  background-color: #ff0000;
+}
+.homescreen-selection {
+  max-width: 300px;
+  background-color: rgba(49, 49, 49, 0.91);
+  border: 10px solid #fff;
+  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.31);
+  text-align: center;
+  padding: 10px;
+  z-index: 9999;
+}
+
+.home-button,
+.home-input {
+  width: 40%;
+  padding: 20px;
+  cursor: pointer;
+  border: 0;
+  outline: 0;
+  margin: 5px;
+  font-family: 'Finger Paint', cursive;
+  box-shadow: 1px 1px 5px #000000;
+}
+.home-button {
+  background-color: #fff;
+}
+.home-button:hover {
+  background-color: #93d88a;
+}
+.home-button:active {
+  background-color: #82eb72;
+  box-shadow: 0px 0px 1px #000000;
+}
+.home-button.active {
+  background-color: #a2e897;
+}
+.home-input {
+  width: 50px;
+  text-align: center;
+  font-size: 15px;
+}
+.home-button-drive {
+  margin: 20px auto;
+}
+/** GAME AREA STYLES **/
+#gameArea {
+    margin: 0 auto;
+  padding: 1%;
+  width: 70%;
+  height: 100%;
+  background-image: url('./assets/bg-texture-1.jpg');
+}
+.game-martix {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto;
+}
+.matrix-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+}
+.matrix-cell {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+.player {
+  display: block;
+  width: 50%;
+  background-size: cover;
+  transform: rotate(90deg);
+}
+.object-player-1 {
+  background-image: url('./assets/player-1.png');
+  background-size: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.object-player-2 {
+  background-image: url('./assets/player-2.png');
+  background-size: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.building-1 {
+  background-image: url('./assets/build-1.png');
+  background-size: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.coin-1 {
+  background-image: url('./assets/coin-1.png');
+  background-size: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.direction-left {
+  transform: rotate(-90deg);
+}
+.direction-right {
+  transform: rotate(90deg);
+}
+.direction-up {
+  transform: rotate(0deg);
+}
+.direction-down {
+  transform: rotate(180deg);
+}
+
+/** SCORE BAR STYLES  **/
+
+#scorebar {
+  display: grid;
+  grid-template-columns: 4fr 4fr 4fr;
+  font-family: 'Finger Paint', cursive;
+  padding: 10px;
+}
+.scorebar-container {
+  display: grid;
+  align-content: center;
+  justify-content: center;
+}
+
+.scorebar-player {
+  display: grid;
+  grid-template-areas:
+    'nik num'
+    'nam num';
+  width: 250px;
+  align-content: center;
+  justify-content: center;
+}
+.scorebar-nickname {
+  display: grid;
+  grid-area: nik;
+  margin: 0;
+  align-content: end;
+  justify-content: center;
+  text-align: left;
+}
+.scorebar-player-type {
+  display: grid;
+  grid-area: nam;
+  margin: 0;
+  align-content: start;
+  justify-content: start;
+  text-align: left;
+}
+
+.scorebar-player-score {
+  display: grid;
+  grid-area: num;
+  font-size: 50px;
+  align-content: center;
+  justify-content: center;
+  margin-left: 20px;
+}
+.scorebar-time {
+  text-align: center;
+}
+.scorebar-time-header {
+  text-align: center;
+  margin: 0;
+  line-height: 1px;
+  font-size: 12px;
+}
+.scorebar-time-counter {
+  text-align: center;
+  font-size: 50px;
+  line-height: 55px;
+}
+
+/** GAME OVER STYLES **/
+.gameover-container {
+  display: grid;
+  align-content: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(28, 12, 12, 0.72);
+}
+.gameover-inner {
+  background-color: #fff;
+  width: 300px;
+  text-align: center;
+    font-family: 'Finger Paint', cursive;
+    padding: 20px;
+    border:10px solid #111;
+}
+#winner-title{
+    margin: 20px auto;
+    font-size: 40px;
+    font-weight: 900;
+    color:#ea0707;
+}
+#winner-player{
+    margin:0;
+    font-size: 20px;
+    font-weight: 100;
+    color:#000;
+    text-shadow: none;
+}
+#winner-nickname{
+    margin:0;
+    font-size: 60px;
+    font-weight: 900;
+}
+#winner-score{
+    margin:10px auto;
+}
+
+/** SERVER MESSAGE STYLES **/
+.server-msg-container {
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-content: center;
+  background-color: rgba(228, 228, 228, 0.72);
+  z-index: 99999;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.server-msg-inner {
+  background-color: #fff;
+  border: 5px solid #000;
+  width: 350px;
+  height: 200px;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  box-shadow: 1px 1px 5px #515151;
+}
+
+/** PREFERENCES  **/
+
+#mute-sound{
+    position: absolute;
+    top: 5px;
+    right:5px;
+    border-radius: 50px;
+    padding: 5px;
+    width:30px;
+    height: 30px;
+    font-size: 15px;
+    cursor: pointer;
+    border:0;
+    outline:0;
+    box-shadow: 1px 1px 3px #333;
+    opacity: 0.7;
+}
+#mute-sound:hover{
+    opacity: 1;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
