@@ -24,7 +24,6 @@ class Matrix {
       })
       str += '\n'
     })
-    console.log(str)
   }
   printRow(rowNum) {
     this.matrix[rowNum].forEach(col => {

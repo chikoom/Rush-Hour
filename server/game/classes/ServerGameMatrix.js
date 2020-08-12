@@ -174,9 +174,6 @@ class NewGameMatrix extends Matrix {
 
       if (this.checkCoinTake(newPositionX, newPositionY)) {
         this.gameState.players[playerId].score++
-        // console.log(
-        //   `Player ${playerId} took a coin! - Score: ${this.gameState.players[playerId].score}`
-        // )
         this.gameState.numberOfCoins--
         this.gameState.hitPlayer = 'male'
       } else {
@@ -191,7 +188,6 @@ class NewGameMatrix extends Matrix {
       this.gameState.players[playerId].position.y = newPositionY
       this.gameState.players[playerId].moveDirection = direction
     } else {
-      //console.log(`Can't move`)
     }
   }
   getLeader() {
@@ -204,7 +200,6 @@ class NewGameMatrix extends Matrix {
   checkCoinTake(posX, posY) {
     if (this.get(posX, posY) === 'c') {
       let randomSound = Math.floor(Math.random() * 17) + 1
-      //this.audio.peopleSounds.men[randomSound].play()
       return true
     }
     return false
@@ -214,7 +209,6 @@ class NewGameMatrix extends Matrix {
   }
   checkWallColusion(posX, posY) {
     if (this.get(posX, posY) === 'x') {
-      //console.log('Player Wall Colusion')
       return true
     }
     return false
@@ -226,7 +220,6 @@ class NewGameMatrix extends Matrix {
         player.position.x === posX &&
         player.position.y === posY
       ) {
-        //console.log('Player colusion')
         return true
       }
     }
@@ -239,7 +232,6 @@ class NewGameMatrix extends Matrix {
       posY < 0 ||
       posY > this.numberOfRows - 1
     ) {
-      //console.log('Out of bounds')
       return true
     }
     return false

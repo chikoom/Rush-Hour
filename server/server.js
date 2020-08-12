@@ -9,27 +9,22 @@ const app = express()
 app.use(express.static(path.join(__dirname, '../dist')))
 app.use(express.static(path.join(__dirname, '../node_modules')))
 
+const PORT = process.env.PORT || 3000
+const server = app.listen(PORT, () => {
+  console.log(`SERVER UP AND AWAY : ${PORT}`)
+})
+
 const gameRooms = {
   fullRooms: new Map(),
   waitingRoom: new Queue(),
   currentRoomID: 1,
 }
 
-const PORT = process.env.PORT || 3000
-const server = app.listen(PORT, () => {
-  console.log(`SERVER UP AND AWAY : ${PORT}`)
-})
-
 const io = require('socket.io')(server)
 
 io.of('/rushGame').on('connection', socket => {
   socket.emit('welcome', 'Connected to server! Waiting for opponent')
-  console.log('New client connected')
-
   let playerID = socket.id
-  console.log('New client ID', playerID)
-  console.log('Searching Game Room')
-
   if (!gameRooms.waitingRoom.peek()) {
     const gameMatrix = new NewGameMatrix(10, 10)
     gameMatrix.newGame(playerID)
@@ -40,7 +35,7 @@ io.of('/rushGame').on('connection', socket => {
     })
 
     socket.join(gameRooms.currentRoomID)
-    console.log(`Added To queue | ROOM ID ${gameRooms.currentRoomID}`)
+
     io.of('/rushGame')
       .to(gameRooms.currentRoomID)
       .emit('waiting', 'waiting for new player')
@@ -53,9 +48,6 @@ io.of('/rushGame').on('connection', socket => {
     waitingRoomObject.gameMatrix.gameState.players[playerID] =
       waitingRoomObject.gameMatrix.gameState.players[0]
     delete waitingRoomObject.gameMatrix.gameState.players[0]
-
-    console.log(`Added To Waiting Room | ID ${waitingRoomID}`)
-    console.log(`ROOM FULL`)
     io.of('/rushGame')
       .to(waitingRoomID)
       .emit('connected', 'the game will start soon...')
@@ -69,14 +61,6 @@ io.of('/rushGame').on('connection', socket => {
   }
 
   socket.on('move', data => {
-    //console.log('Move Player', socket.id)
-    //console.log('to', data.move)
-    //console.log('In room', data.roomID)
-
-    // console.log(
-    //   util.inspect(gameRooms.fullRooms, { showHidden: true, depth: 99 })
-    // )
-
     gameRooms.fullRooms
       .get(data.roomID)
       .gameMatrix.movePlayer(data.move[0], data.move[1])

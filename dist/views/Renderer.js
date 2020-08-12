@@ -20,20 +20,17 @@ export class Renderer {
     }
   }
   renderGameOver(winnerPlayer) {
-    console.log('winner render', winnerPlayer)
     const gameOverHTML = this.templates.gameOver({
       winnerPlayer,
     })
     $('#root-container').append(gameOverHTML)
   }
   renderServerMsg(msg) {
-    console.log(msg)
     const serverMsgHTML = this.templates.serverMsg({ msg })
     $('.server-msg-container').remove()
     $('#root-container').append(serverMsgHTML)
   }
   renderBoard(matrix) {
-    console.log(matrix)
     const gameAreaHTML = this.templates.gameArea({ matrix })
     $('#root-container').empty().append(gameAreaHTML)
   }
@@ -42,14 +39,12 @@ export class Renderer {
     $('#root-container').empty().append(homescreenHTML)
   }
   renderMenu(gamePrefs) {
-    console.log('Game prefs', gamePrefs)
     const menuHTML = this.templates.menu({ gamePrefs })
     $('#click-to-start').hide()
     $('.homescreen-selection').remove()
     $('.homescreen').append(menuHTML)
   }
   renderScore(gameState) {
-    console.log('game state', gameState)
     const scorebarHTML = this.templates.scorebar({
       gameState,
     })

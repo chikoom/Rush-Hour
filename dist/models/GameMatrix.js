@@ -2,7 +2,7 @@ import { Matrix } from './Matrix.js'
 import { Player } from './Player.js'
 import { Queue } from './Queue.js'
 
-export class NewGameMatrix extends Matrix {
+export class GameMatrix extends Matrix {
   constructor(gamePrefs) {
     super(gamePrefs.numberOfRows, gamePrefs.numberOfCols)
     this.startingPositions = {
@@ -21,14 +21,9 @@ export class NewGameMatrix extends Matrix {
       numberOfCoins: 0,
       matrix: this.matrix,
     }
-    this.gamePrefs = {
-      numberOfPlayers: '1',
-      compMode: 'min',
-      netMode: 'local',
-    }
-
     this.initiateGame(gamePrefs)
   }
+
   generateMatrix(rows, cols) {
     const matrix = []
     for (let r = 0; r < rows; r++) {
@@ -40,8 +35,10 @@ export class NewGameMatrix extends Matrix {
     }
     return matrix
   }
+
   initiateGame(gamePrefs) {
-    this.createPlayers(gamePrefs.players)
+    this.createPlayers(gamePrefs)
+
     let isMatrixGood = false
     while (!isMatrixGood) {
       this.createWalls()
@@ -49,10 +46,12 @@ export class NewGameMatrix extends Matrix {
       isMatrixGood = this.checkBlockedItems()
       if (!isMatrixGood) this.clearMatrix()
     }
+
     this.gameState.screen = 'gameArea'
     this.gameState.matrix = this.matrix
     return this.gameState.matrix
   }
+
   clearMatrix() {
     for (let rowIndex in this.matrix) {
       for (let itemIndex in this.matrix[rowIndex]) {
@@ -61,6 +60,7 @@ export class NewGameMatrix extends Matrix {
       }
     }
   }
+
   checkBlockedItems() {
     const exploreNeighbouts = (row, col) => {
       for (let i = 0; i < 4; i++) {
@@ -97,6 +97,7 @@ export class NewGameMatrix extends Matrix {
     }
     return this.gameState.numberOfCoins === coinsFound && reachedOtherPlayer
   }
+
   createWalls() {
     let numberOfWalls = Math.floor((this.numberOfCols * this.numberOfRows) / 4)
     while (numberOfWalls) {
@@ -111,6 +112,7 @@ export class NewGameMatrix extends Matrix {
       }
     }
   }
+
   createCoins() {
     this.gameState.numberOfCoins = 0
     for (let rowI in this.gameState.matrix) {
@@ -122,18 +124,23 @@ export class NewGameMatrix extends Matrix {
       }
     }
   }
+
   checkCoinTake(posX, posY) {
     return this.get(posX, posY) === 'c'
   }
+
   coinsLeft() {
     return this.gameState.numberOfCoins > 0
   }
+
   checkWallColusion(posX, posY) {
     return this.get(posX, posY) === 'x'
   }
+
   checkPlayerColusion(playerId, posX, posY) {
     return this.matrix[posY][posX] instanceof Player
   }
+
   checkOutbounds(posX, posY) {
     return (
       posX < 0 ||
@@ -142,6 +149,7 @@ export class NewGameMatrix extends Matrix {
       posY > this.numberOfRows - 1
     )
   }
+
   getLeader() {
     let leader = { score: 0 }
     Object.values(this.gameState.players).forEach(player => {
@@ -149,8 +157,9 @@ export class NewGameMatrix extends Matrix {
     })
     return leader
   }
-  createPlayers(playersInfo) {
-    playersInfo.forEach((player, index) => {
+
+  createPlayers(gamePrefs) {
+    gamePrefs.players.forEach((player, index) => {
       const initMove = index == 1 ? 'left' : 'right'
       let newPlayer = ''
       if (player.type === 'human') {
@@ -214,13 +223,13 @@ export class NewGameMatrix extends Matrix {
       this.gameState.players[playerId].position.x = newPositionX
       this.gameState.players[playerId].position.y = newPositionY
       this.gameState.players[playerId].moveDirection = direction
-    } else {
-      console.log(`Can't move`)
     }
   }
+
   getGameState() {
     return this.gameState
   }
+
   getMatrix() {
     return this.gameState.matrix
   }

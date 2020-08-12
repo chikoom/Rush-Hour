@@ -1,4 +1,4 @@
-import { NewGameMatrix } from '../models/NewGameMatrix.js'
+import { GameMatrix } from './GameMatrix.js'
 
 export class GameManager {
   constructor() {
@@ -37,15 +37,19 @@ export class GameManager {
     this.socket = {}
     this.gameMatrix = {}
   }
+
   get gamePrefs() {
     return this._gamePrefs
   }
+
   get controlMapping() {
     return this._controlMapping
   }
+
   newGame() {
-    this.gameMatrix = new NewGameMatrix(this._gamePrefs)
+    this.gameMatrix = new GameMatrix(this._gamePrefs)
   }
+
   async newRemoteGame() {
     if (
       this._gamePrefs.numberOfPlayers === '2' &&

@@ -88,31 +88,29 @@ $('#mute-sound').on('click', toggleSound)
 
 const handleSocketListners = socket => {
   socket.on('welcome', msg => {
-    console.log(msg)
     renderer.renderServerMsg(msg)
   })
+
   socket.on('waiting', msg => {
-    console.log(msg)
     renderer.renderServerMsg(msg)
   })
+
   socket.on('connected', msg => {
-    console.log(msg)
     renderer.renderServerMsg(msg)
   })
+
   socket.on('ready', data => {
-    console.log(data)
     socketItem.roomID = data.roomID
     renderer.renderServerMsg(data.msg)
     renderer.render(data.gameState)
   })
+
   socket.on('move', data => {
-    console.log(data)
     socketItem.roomID = data.roomID
     if (data.gameState.hitPlayer !== 'none')
       gameSound.playSound(
         `${data.gameState.hitPlayer}-${Math.floor(Math.random() * 17) + 1}`
       )
-
     renderer.render(data.gameState)
   })
 }

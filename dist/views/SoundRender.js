@@ -27,8 +27,6 @@ export class SoundRender {
         },
       ])
     }
-    console.log('soundPlayers loaded', this.soundPlayers)
-
     this.musicPlayer = new Audio()
 
     this.peopleSounds = {

@@ -2,6 +2,7 @@ export class Matrix {
   constructor(rows, cols) {
     this.matrix = this.generateMatrix(rows, cols)
   }
+
   generateMatrix(rows, cols) {
     const matrix = []
     for (let r = 0; r < rows; r++) {
@@ -13,9 +14,11 @@ export class Matrix {
     }
     return matrix
   }
+
   get(colNum, rowNum) {
     return this.matrix[rowNum][colNum]
   }
+
   print() {
     let str = ''
     this.matrix.forEach(row => {
@@ -24,13 +27,12 @@ export class Matrix {
       })
       str += '\n'
     })
-    console.log(str)
   }
+
   printRow(rowNum) {
-    this.matrix[rowNum].forEach(col => {
-      console.log(col)
-    })
+    this.matrix[rowNum].forEach(col => {})
   }
+
   printColumn(colNum) {
     this.matrix.forEach(row => {
       row.forEach((col, index) => {
@@ -38,9 +40,11 @@ export class Matrix {
       })
     })
   }
+
   alter(col, row, newNum) {
     this.matrix[row][col] = newNum
   }
+
   findCoordinate = value => {
     const objToReturn = {}
     this.matrix.forEach((row, rIndex) => {
